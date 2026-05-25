@@ -1,0 +1,2 @@
+# Python >= 3.10 required
+# No external runtime dependencies — stdlib only (pickle, difflib, re, datetime, pathlib)
