@@ -4,6 +4,31 @@ from utils.parser import parse_input
 from models.address_book import AddressBook
 from models.notes import NoteBook
 from storage.persistence import save_data, load_data
+from handlers.note_handlers import (
+    add_note,
+    show_all_notes,
+    show_note,
+    find_note,
+    edit_note,
+    delete_note,
+    add_tag,
+    remove_tag,
+    find_by_tag,
+    sort_by_tag,
+)
+
+NOTE_COMMANDS = {
+    "add-note": add_note,
+    "show-notes": show_all_notes,
+    "show-note": show_note,
+    "find-note": find_note,
+    "edit-note": edit_note,
+    "delete-note": delete_note,
+    "add-tag": add_tag,
+    "remove-tag": remove_tag,
+    "find-by-tag": find_by_tag,
+    "sort-by-tag": sort_by_tag,
+}
 
 MENU = """
 Commands:
@@ -40,6 +65,9 @@ def main():
 
             elif command == "help":
                 print(MENU)
+
+            elif command in NOTE_COMMANDS:
+                print(NOTE_COMMANDS[command](args, notebook))
 
             else:
                 print(f"Unknown command '{command}'. Type 'help' to see available commands.")
