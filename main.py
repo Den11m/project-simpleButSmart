@@ -1,6 +1,6 @@
 """Entry point for the Personal Assistant CLI."""
 
-from utils.parser import parse_input
+from utils.parser import parse_input, suggest_command
 from models.address_book import AddressBook
 from models.notes import NoteBook
 from storage.persistence import save_data, load_data
@@ -113,7 +113,17 @@ def main():
                 print(find_contact(args, book))
 
             else:
-                print(f"Unknown command '{command}'. Type 'help' to see available commands.")
+                suggestion = suggest_command(command)
+
+                if suggestion:
+                    print(
+                    f"Unknown command '{command}'. "
+                    f"Did you mean '{suggestion}'?"
+                    )
+                else:
+                    print(
+                        "Unknown command. Type 'help' to see available commands."
+                    )
 
     finally:
         save_data(book, "addressbook.pkl")
