@@ -30,6 +30,19 @@ NOTE_COMMANDS = {
     "sort-by-tag": sort_by_tag,
 }
 
+NOTE_COMMANDS = {
+    "add-note": add_note,
+    "show-notes": show_all_notes,
+    "show-note": show_note,
+    "find-note": find_note,
+    "edit-note": edit_note,
+    "delete-note": delete_note,
+    "add-tag": add_tag,
+    "remove-tag": remove_tag,
+    "find-by-tag": find_by_tag,
+    "sort-by-tag": sort_by_tag,
+}
+
 from handlers.contact_handlers import (show_phone,
                                         show_all, 
                                         add_contact, 
