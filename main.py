@@ -42,12 +42,37 @@ from handlers.contact_handlers import (show_phone,
                                         get_birthdays,
                                         find_contact)
 MENU = """
-Commands:
-  Contacts : add, change, delete-contact, phone, all
-             add-email, add-address, add-birthday, show-birthday, birthdays, find
-  Notes    : add-note, show-notes, show-note, find-note, edit-note, delete-note
-             add-tag, remove-tag, find-by-tag, sort-by-tag
-  Other    : help, hello, close / exit
+Available commands:
+
+  Contacts:
+    add [name] [phone]                - Add contact or add phone to existing
+    change [name] [old] [new]         - Change phone number
+    delete-contact [name]             - Delete a contact
+    phone [name]                      - Show phone(s) of a contact
+    all                               - Show all contacts
+    add-email [name] [email]          - Add email to a contact
+    add-address [name] [address]      - Add address to a contact
+    add-birthday [name] [DD.MM.YYYY]  - Add birthday to a contact
+    show-birthday [name]              - Show birthday of a contact
+    birthdays [days]                  - Show upcoming birthdays within N days
+    find [query]                      - Search contacts by name or phone
+
+  Notes:
+    add-note [title] [text]           - Add a new note
+    show-notes                        - Show all notes
+    show-note [title]                 - Show a specific note
+    find-note [query]                 - Search notes by text
+    edit-note [title] [new text]      - Edit an existing note
+    delete-note [title]               - Delete a note
+    add-tag [title] [tag]             - Add tag to a note
+    remove-tag [title] [tag]          - Remove tag from a note
+    find-by-tag [tag]                 - Find notes by tag
+    sort-by-tag                       - Show notes sorted by tags
+
+  Other:
+    hello                             - Greet the assistant
+    help                              - Show this help message
+    close / exit                      - Save and exit
 """
 
 
@@ -122,7 +147,7 @@ def main():
                     )
                 else:
                     print(
-                        "Unknown command. Type 'help' to see available commands."
+                            f"Unknown command '{command}'. Type 'help' to see available commands."
                     )
 
     finally:
