@@ -15,6 +15,7 @@ def parse_input(user_input: str) -> tuple[str, list[str]]:
     args = parts[1:]
     return command, args
 
+
 ALL_COMMANDS = [
     "add",
     "change",

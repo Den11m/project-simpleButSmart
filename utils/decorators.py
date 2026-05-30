@@ -2,8 +2,9 @@
 
 
 def input_error(func):
-    """Catch KeyError, ValueError, IndexError and return a user-friendly message instead of crashing."""
+    """Catch KeyError, ValueError, IndexError and return a user-friendly message."""
     def inner(*args, **kwargs):
+        """Wrap func, converting common errors to user-friendly strings."""
         try:
             return func(*args, **kwargs)
         except KeyError as e:

@@ -16,6 +16,19 @@ from handlers.note_handlers import (
     find_by_tag,
     sort_by_tag,
 )
+from handlers.contact_handlers import (
+    show_phone,
+    show_all,
+    add_contact,
+    change_phone,
+    delete_contact,
+    add_email,
+    add_address,
+    add_birthday,
+    show_birthday,
+    get_birthdays,
+    find_contact,
+)
 
 NOTE_COMMANDS = {
     "add-note": add_note,
@@ -30,17 +43,6 @@ NOTE_COMMANDS = {
     "sort-by-tag": sort_by_tag,
 }
 
-from handlers.contact_handlers import (show_phone,
-                                        show_all,
-                                        add_contact,
-                                        change_phone,
-                                        delete_contact,
-                                        add_email,
-                                        add_address,
-                                        add_birthday,
-                                        show_birthday,
-                                        get_birthdays,
-                                        find_contact)
 MENU = """
 Available commands:
 
@@ -142,12 +144,13 @@ def main():
 
                 if suggestion:
                     print(
-                    f"Unknown command '{command}'. "
-                    f"Did you mean '{suggestion}'?"
+                        f"Unknown command '{command}'. "
+                        f"Did you mean '{suggestion}'?"
                     )
                 else:
                     print(
-                            f"Unknown command '{command}'. Type 'help' to see available commands."
+                        f"Unknown command '{command}'. "
+                        "Type 'help' to see available commands."
                     )
 
     finally:

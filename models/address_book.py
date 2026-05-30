@@ -69,16 +69,19 @@ class Record:
         self.address: Address | None = None
         self.birthday: Birthday | None = None
 
-    def add_phone(self, phone: str):
+    def add_phone(self, phone: str) -> None:
+        """Validate and append a phone number to this record."""
         self.phones.append(Phone(phone))
 
-    def remove_phone(self, phone: str):
+    def remove_phone(self, phone: str) -> None:
+        """Remove a phone number. Raises ValueError if not present."""
         target = self.find_phone(phone)
         if target is None:
             raise ValueError(f"Phone {phone} not found")
         self.phones.remove(target)
 
-    def edit_phone(self, old: str, new: str):
+    def edit_phone(self, old: str, new: str) -> None:
+        """Replace old phone with new. Raises ValueError if old not found."""
         target = self.find_phone(old)
         if target is None:
             raise ValueError(f"Phone {old} not found")
@@ -86,28 +89,34 @@ class Record:
         self.phones[idx] = Phone(new)
 
     def find_phone(self, phone: str) -> Phone | None:
+        """Return the Phone object matching value, or None."""
         return next((p for p in self.phones if p.value == phone), None)
 
-    def add_email(self, email: str):
+    def add_email(self, email: str) -> None:
+        """Validate and append an email address to this record."""
         self.emails.append(Email(email))
 
-    def remove_email(self, email: str):
+    def remove_email(self, email: str) -> None:
+        """Remove an email address. Raises ValueError if not present."""
         target = next((e for e in self.emails if e.value == email), None)
         if target is None:
             raise ValueError(f"Email {email} not found")
         self.emails.remove(target)
 
-    def edit_email(self, old: str, new: str):
+    def edit_email(self, old: str, new: str) -> None:
+        """Replace old email with new. Raises ValueError if old not found."""
         target = next((e for e in self.emails if e.value == old), None)
         if target is None:
             raise ValueError(f"Email {old} not found")
         idx = self.emails.index(target)
         self.emails[idx] = Email(new)
 
-    def add_address(self, address: str):
+    def add_address(self, address: str) -> None:
+        """Set (or replace) the free-text address for this record."""
         self.address = Address(address)
 
-    def add_birthday(self, birthday: str):
+    def add_birthday(self, birthday: str) -> None:
+        """Set (or replace) the birthday (DD.MM.YYYY) for this record."""
         self.birthday = Birthday(birthday)
 
     def __str__(self):
@@ -127,22 +136,26 @@ class Record:
 class AddressBook(UserDict):
     """Stores and manages contact Records, keyed by name."""
 
-    def add_record(self, record: Record):
+    def add_record(self, record: Record) -> None:
+        """Store a Record, keyed by its name value."""
         self.data[record.name.value] = record
 
     def find(self, name: str) -> Record | None:
+        """Find a record by name (case-insensitive). Returns None if not found."""
         name_lower = name.lower()
         return next(
             (r for k, r in self.data.items() if k.lower() == name_lower), None
         )
 
-    def delete(self, name: str):
+    def delete(self, name: str) -> None:
+        """Delete a record by name. Raises KeyError if not found."""
         record = self.find(name)
         if record is None:
             raise KeyError(f"Contact '{name}' not found")
         del self.data[record.name.value]
 
     def search(self, query: str) -> list[Record]:
+        """Case-insensitive partial match against name, phones, and emails."""
         q = query.lower()
         results = []
         for record in self.data.values():
@@ -155,21 +168,28 @@ class AddressBook(UserDict):
         return results
 
     def get_upcoming_birthdays(self, days: int = 7) -> list[dict]:
+        """Return contacts with birthdays in the next `days` days.
+
+        Each entry is {'name': str, 'congratulation_date': 'DD.MM.YYYY'}.
+        Birthdays falling on Saturday/Sunday are shifted to Monday.
+        """
         today = datetime.today().date()
         upcoming = []
         for record in self.data.values():
             if record.birthday is None:
                 continue
             bday = record.birthday.value.date()
+            # Project birthday to the current year for comparison
             bday_this_year = bday.replace(year=today.year)
             if bday_this_year < today:
                 bday_this_year = bday_this_year.replace(year=today.year + 1)
             delta = (bday_this_year - today).days
             if 0 <= delta <= days:
                 congrats = bday_this_year
-                if congrats.weekday() == 5:
+                # Shift weekend congratulation dates to Monday
+                if congrats.weekday() == 5:  # Saturday
                     congrats += timedelta(days=2)
-                elif congrats.weekday() == 6:
+                elif congrats.weekday() == 6:  # Sunday
                     congrats += timedelta(days=1)
                 upcoming.append(
                     {
